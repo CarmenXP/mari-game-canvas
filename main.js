@@ -60,3 +60,53 @@ class GameItem{
  let mario= new Mario({x:0, y:450,image: images.mario})
  
 
+ //Main functions
+ function start() {
+     interval = setInterval(update,1000/60)
+ }
+
+ function update() { // se repite infinitamente
+    //también contamos
+    frames++
+    console.log(frames)
+    //aquí dibujamos
+    //antes borramos
+    ctx.clearRect(0,0,canvas.width,canvas.height)
+    //redibujamos cada uno de los elementos del videojuego(instancias) <-- regla
+    backg.draw()
+    mario.draw()
+    //si lo quiero en mi videojuego lo tengo que meter a update
+    drawGoombas()
+    //generate stuff:
+    if (frames%10 === 0) generateGoomba() // tarea, cual es el tiempo optimo para que no se encimen
+ }
+
+ function stop(){
+     clearInterval(interval)
+ }
+
+ //aux functions
+ // <3 del juego
+ function generateGoomba(){
+     //queremos: enemies.push(new Goomba({x:100,y:20,image:images.goomba}))
+     let x = Math.floor((Math.random()*(canvas.width-5)) +5)
+     //generate random vy
+     let goomba= new Goomba ({x,image:images,goomba, vy:2})
+        enemies.push(goomba)
+
+ }
+
+ function drawGoombas(){ // ya podemos dibujarlos a todos
+    enemies.forEach(goomba=>{ // porque es un ciclo
+        goomba.draw()
+    })
+
+ }
+
+ //listeners
+ addEventListener('keydown', e=>{
+     if(e.keyCode===37) mario.moveLeft() // esto es un atributo público
+     if (e.keyCode===39) mario.moveRight() // deberíamos usar setters and getters
+ })
+
+ start()
